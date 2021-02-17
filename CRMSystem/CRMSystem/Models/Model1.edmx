@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CRM_System1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="tblCourses">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TechnologyId" Type="int" />
+          <Property Name="CourseName" Type="varchar" MaxLength="50" />
+          <Property Name="Duration" Type="float" />
+        </EntityType>
+        <EntityType Name="tblModules">
+          <Key>
+            <PropertyRef Name="ModuleId" />
+          </Key>
+          <Property Name="ModuleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseId" Type="int" />
+          <Property Name="ModuleName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblTechnology">
+          <Key>
+            <PropertyRef Name="TechnologyId" />
+          </Key>
+          <Property Name="TechnologyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TechnologyName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblTopics">
+          <Key>
+            <PropertyRef Name="TopicId" />
+          </Key>
+          <Property Name="TopicId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModuleId" Type="int" />
+          <Property Name="TopicName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblTrainingContents">
+          <Key>
+            <PropertyRef Name="TrainingContentId" />
+          </Key>
+          <Property Name="TrainingContentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseId" Type="int" />
+          <Property Name="ContentName" Type="varchar" MaxLength="50" />
+          <Property Name="Duration" Type="float" />
+        </EntityType>
+        <EntityType Name="tblTrainingFees">
+          <Key>
+            <PropertyRef Name="TrainingFeesId" />
+          </Key>
+          <Property Name="TrainingFeesId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseId" Type="int" />
+          <Property Name="Lumsum" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Installment" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="RegistrationAmt" Type="numeric" Precision="18" Scale="0" />
+        </EntityType>
+        <Association Name="FK_tblCourses_tblTechnology">
+          <End Role="tblTechnology" Type="Self.tblTechnology" Multiplicity="0..1" />
+          <End Role="tblCourses" Type="Self.tblCourses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblTechnology">
+              <PropertyRef Name="TechnologyId" />
+            </Principal>
+            <Dependent Role="tblCourses">
+              <PropertyRef Name="TechnologyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblModules_tblCourses">
+          <End Role="tblCourses" Type="Self.tblCourses" Multiplicity="0..1" />
+          <End Role="tblModules" Type="Self.tblModules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCourses">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="tblModules">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTopics_tblModules">
+          <End Role="tblModules" Type="Self.tblModules" Multiplicity="0..1" />
+          <End Role="tblTopics" Type="Self.tblTopics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblModules">
+              <PropertyRef Name="ModuleId" />
+            </Principal>
+            <Dependent Role="tblTopics">
+              <PropertyRef Name="ModuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTrainingContents_tblCourses">
+          <End Role="tblCourses" Type="Self.tblCourses" Multiplicity="0..1" />
+          <End Role="tblTrainingContents" Type="Self.tblTrainingContents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCourses">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="tblTrainingContents">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTrainingFees_tblCourses">
+          <End Role="tblCourses" Type="Self.tblCourses" Multiplicity="0..1" />
+          <End Role="tblTrainingFees" Type="Self.tblTrainingFees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCourses">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="tblTrainingFees">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CRM_System1ModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCourses" EntityType="Self.tblCourses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblModules" EntityType="Self.tblModules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTechnology" EntityType="Self.tblTechnology" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTopics" EntityType="Self.tblTopics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTrainingContents" EntityType="Self.tblTrainingContents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTrainingFees" EntityType="Self.tblTrainingFees" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblCourses_tblTechnology" Association="Self.FK_tblCourses_tblTechnology">
+            <End Role="tblTechnology" EntitySet="tblTechnology" />
+            <End Role="tblCourses" EntitySet="tblCourses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblModules_tblCourses" Association="Self.FK_tblModules_tblCourses">
+            <End Role="tblCourses" EntitySet="tblCourses" />
+            <End Role="tblModules" EntitySet="tblModules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTopics_tblModules" Association="Self.FK_tblTopics_tblModules">
+            <End Role="tblModules" EntitySet="tblModules" />
+            <End Role="tblTopics" EntitySet="tblTopics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTrainingContents_tblCourses" Association="Self.FK_tblTrainingContents_tblCourses">
+            <End Role="tblCourses" EntitySet="tblCourses" />
+            <End Role="tblTrainingContents" EntitySet="tblTrainingContents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTrainingFees_tblCourses" Association="Self.FK_tblTrainingFees_tblCourses">
+            <End Role="tblCourses" EntitySet="tblCourses" />
+            <End Role="tblTrainingFees" EntitySet="tblTrainingFees" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CRM_System1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="tblCours">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TechnologyId" Type="Int32" />
+          <Property Name="CourseName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Duration" Type="Double" />
+          <NavigationProperty Name="tblTechnology" Relationship="Self.FK_tblCourses_tblTechnology" FromRole="tblCourses" ToRole="tblTechnology" />
+          <NavigationProperty Name="tblModules" Relationship="Self.FK_tblModules_tblCourses" FromRole="tblCourses" ToRole="tblModules" />
+          <NavigationProperty Name="tblTrainingContents" Relationship="Self.FK_tblTrainingContents_tblCourses" FromRole="tblCourses" ToRole="tblTrainingContents" />
+          <NavigationProperty Name="tblTrainingFees" Relationship="Self.FK_tblTrainingFees_tblCourses" FromRole="tblCourses" ToRole="tblTrainingFees" />
+        </EntityType>
+        <EntityType Name="tblModule">
+          <Key>
+            <PropertyRef Name="ModuleId" />
+          </Key>
+          <Property Name="ModuleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseId" Type="Int32" />
+          <Property Name="ModuleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblCours" Relationship="Self.FK_tblModules_tblCourses" FromRole="tblModules" ToRole="tblCourses" />
+          <NavigationProperty Name="tblTopics" Relationship="Self.FK_tblTopics_tblModules" FromRole="tblModules" ToRole="tblTopics" />
+        </EntityType>
+        <EntityType Name="tblTechnology">
+          <Key>
+            <PropertyRef Name="TechnologyId" />
+          </Key>
+          <Property Name="TechnologyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TechnologyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblCourses" Relationship="Self.FK_tblCourses_tblTechnology" FromRole="tblTechnology" ToRole="tblCourses" />
+        </EntityType>
+        <EntityType Name="tblTopic">
+          <Key>
+            <PropertyRef Name="TopicId" />
+          </Key>
+          <Property Name="TopicId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModuleId" Type="Int32" />
+          <Property Name="TopicName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblModule" Relationship="Self.FK_tblTopics_tblModules" FromRole="tblTopics" ToRole="tblModules" />
+        </EntityType>
+        <EntityType Name="tblTrainingContent">
+          <Key>
+            <PropertyRef Name="TrainingContentId" />
+          </Key>
+          <Property Name="TrainingContentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseId" Type="Int32" />
+          <Property Name="ContentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Duration" Type="Double" />
+          <NavigationProperty Name="tblCours" Relationship="Self.FK_tblTrainingContents_tblCourses" FromRole="tblTrainingContents" ToRole="tblCourses" />
+        </EntityType>
+        <EntityType Name="tblTrainingFee">
+          <Key>
+            <PropertyRef Name="TrainingFeesId" />
+          </Key>
+          <Property Name="TrainingFeesId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseId" Type="Int32" />
+          <Property Name="Lumsum" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Installment" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="RegistrationAmt" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="tblCours" Relationship="Self.FK_tblTrainingFees_tblCourses" FromRole="tblTrainingFees" ToRole="tblCourses" />
+        </EntityType>
+        <Association Name="FK_tblCourses_tblTechnology">
+          <End Role="tblTechnology" Type="Self.tblTechnology" Multiplicity="0..1" />
+          <End Role="tblCourses" Type="Self.tblCours" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblTechnology">
+              <PropertyRef Name="TechnologyId" />
+            </Principal>
+            <Dependent Role="tblCourses">
+              <PropertyRef Name="TechnologyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblModules_tblCourses">
+          <End Role="tblCourses" Type="Self.tblCours" Multiplicity="0..1" />
+          <End Role="tblModules" Type="Self.tblModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCourses">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="tblModules">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTrainingContents_tblCourses">
+          <End Role="tblCourses" Type="Self.tblCours" Multiplicity="0..1" />
+          <End Role="tblTrainingContents" Type="Self.tblTrainingContent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCourses">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="tblTrainingContents">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTrainingFees_tblCourses">
+          <End Role="tblCourses" Type="Self.tblCours" Multiplicity="0..1" />
+          <End Role="tblTrainingFees" Type="Self.tblTrainingFee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCourses">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="tblTrainingFees">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTopics_tblModules">
+          <End Role="tblModules" Type="Self.tblModule" Multiplicity="0..1" />
+          <End Role="tblTopics" Type="Self.tblTopic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblModules">
+              <PropertyRef Name="ModuleId" />
+            </Principal>
+            <Dependent Role="tblTopics">
+              <PropertyRef Name="ModuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CRM_System1Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="tblCourses" EntityType="Self.tblCours" />
+          <EntitySet Name="tblModules" EntityType="Self.tblModule" />
+          <EntitySet Name="tblTechnologies" EntityType="Self.tblTechnology" />
+          <EntitySet Name="tblTopics" EntityType="Self.tblTopic" />
+          <EntitySet Name="tblTrainingContents" EntityType="Self.tblTrainingContent" />
+          <EntitySet Name="tblTrainingFees" EntityType="Self.tblTrainingFee" />
+          <AssociationSet Name="FK_tblCourses_tblTechnology" Association="Self.FK_tblCourses_tblTechnology">
+            <End Role="tblTechnology" EntitySet="tblTechnologies" />
+            <End Role="tblCourses" EntitySet="tblCourses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblModules_tblCourses" Association="Self.FK_tblModules_tblCourses">
+            <End Role="tblCourses" EntitySet="tblCourses" />
+            <End Role="tblModules" EntitySet="tblModules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTrainingContents_tblCourses" Association="Self.FK_tblTrainingContents_tblCourses">
+            <End Role="tblCourses" EntitySet="tblCourses" />
+            <End Role="tblTrainingContents" EntitySet="tblTrainingContents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTrainingFees_tblCourses" Association="Self.FK_tblTrainingFees_tblCourses">
+            <End Role="tblCourses" EntitySet="tblCourses" />
+            <End Role="tblTrainingFees" EntitySet="tblTrainingFees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTopics_tblModules" Association="Self.FK_tblTopics_tblModules">
+            <End Role="tblModules" EntitySet="tblModules" />
+            <End Role="tblTopics" EntitySet="tblTopics" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CRM_System1ModelStoreContainer" CdmEntityContainer="CRM_System1Entities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CRM_System1Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCourses">
+            <EntityTypeMapping TypeName="CRM_System1Model.tblCours">
+              <MappingFragment StoreEntitySet="tblCourses">
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="TechnologyId" ColumnName="TechnologyId" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblModules">
+            <EntityTypeMapping TypeName="CRM_System1Model.tblModule">
+              <MappingFragment StoreEntitySet="tblModules">
+                <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTechnologies">
+            <EntityTypeMapping TypeName="CRM_System1Model.tblTechnology">
+              <MappingFragment StoreEntitySet="tblTechnology">
+                <ScalarProperty Name="TechnologyId" ColumnName="TechnologyId" />
+                <ScalarProperty Name="TechnologyName" ColumnName="TechnologyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTopics">
+            <EntityTypeMapping TypeName="CRM_System1Model.tblTopic">
+              <MappingFragment StoreEntitySet="tblTopics">
+                <ScalarProperty Name="TopicId" ColumnName="TopicId" />
+                <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
+                <ScalarProperty Name="TopicName" ColumnName="TopicName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTrainingContents">
+            <EntityTypeMapping TypeName="CRM_System1Model.tblTrainingContent">
+              <MappingFragment StoreEntitySet="tblTrainingContents">
+                <ScalarProperty Name="TrainingContentId" ColumnName="TrainingContentId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="ContentName" ColumnName="ContentName" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTrainingFees">
+            <EntityTypeMapping TypeName="CRM_System1Model.tblTrainingFee">
+              <MappingFragment StoreEntitySet="tblTrainingFees">
+                <ScalarProperty Name="TrainingFeesId" ColumnName="TrainingFeesId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="Lumsum" ColumnName="Lumsum" />
+                <ScalarProperty Name="Installment" ColumnName="Installment" />
+                <ScalarProperty Name="RegistrationAmt" ColumnName="RegistrationAmt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
