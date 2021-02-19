@@ -1,32 +1,36 @@
-﻿using System;
+﻿using CRMSystem.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using CRMSystem.Models;
-using System.Data.Entity;
 
-namespace CRMSystem.Models
+namespace CRMSystem.Controllers
 {
-    public class HomeController : Controller
+    public class AdminController : Controller
     {
         CRM_System1Entities db = new CRM_System1Entities();
-        // GET: Home
+        // GET: Admin
         public ActionResult Index()
         {
-            var techlist = db.tblTechnologies.ToList();
-            return View(techlist);
+            return View();
         }
         [HttpGet]
         public ActionResult AddTechnology()
         {
+            ViewBag.list = db.tblTechnologies.ToList();
             return View();
         }
         [HttpPost]
         public ActionResult AddTechnology(tblTechnology tech)
         {
+
             db.tblTechnologies.Add(tech);
             db.SaveChanges();
+            ViewBag.success = "Added successfully!";
+            ViewBag.list = db.tblTechnologies.ToList();
+
             return View();
         }
         [HttpGet]
@@ -40,7 +44,15 @@ namespace CRMSystem.Models
         {
             db.Entry(tech).State = EntityState.Modified;
             db.SaveChanges();
-            return View();
+            return RedirectToAction("AddTechnology");
         }
+        public ActionResult DeleteTechnology(int id)
+        {
+    //        var cat = db.tblTechnologies.Find(id);
+            db.tblTechnologies.Remove(db.tblTechnologies.Find(id));
+            db.SaveChanges();
+            return RedirectToAction("AddTechnology");
+        }
+
     }
 }
